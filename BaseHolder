@@ -1,0 +1,71 @@
+package com.czb.wisdomcashier.view.viewholder
+
+/**
+ * Created by San on 2017/11/22.
+ */
+
+import android.content.Context
+import android.util.SparseArray
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.IdRes
+import androidx.annotation.LayoutRes
+import androidx.recyclerview.widget.RecyclerView
+
+/**
+ * 基础的ViewHolder<br></br>
+ * ViewHolder只作View的缓存,不关心数据内容
+ * Created by DevWiki on 2016/5/17.
+ */
+open class BaseHolder : RecyclerView.ViewHolder {
+    private var viewArray: SparseArray<View>? = null
+
+    /**
+     * 获取Context实例
+     *
+     * @return context
+     */
+    protected val context: Context
+        get() = itemView.context
+
+    /**
+     * 构造ViewHolder
+     *
+     * @param parent 父类容器
+     * @param resId  布局资源文件id
+     */
+    constructor(parent: ViewGroup, @LayoutRes resId: Int) : super(LayoutInflater.from(parent.context).inflate(resId, parent, false)) {
+        viewArray = SparseArray()
+    }
+
+    /**
+     * 构建ViewHolder
+     *
+     * @param view 布局View
+     */
+    constructor(view: View) : super(view) {
+        viewArray = SparseArray()
+    }
+
+    fun setOnItemClickListener(listener: View.OnClickListener) {
+        itemView.setOnClickListener(listener)
+    }
+
+    /**
+     * 获取布局中的View
+     *
+     * @param viewId view的Id
+     * @param <T>    View的类型
+     * @return view
+    </T> */
+    @SuppressWarnings("unchecked")
+    protected fun <T : View> getView(@IdRes viewId: Int): T {
+        var view: View? = viewArray!!.get(viewId)
+        if (view == null) {
+            view = itemView.findViewById(viewId)
+            viewArray!!.put(viewId, view)
+        }
+        return view as T
+    }
+}
